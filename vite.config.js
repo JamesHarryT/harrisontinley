@@ -1,5 +1,10 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-	base: 'https://github.com/JamesHarryT/harrisontinley' // <-- Replace this
+	root: 'src', // root is now /src
+	base: '/GitHubPortfolio/', // needed for GitHub Pages
+	build: {
+		outDir: '../dist', // go up to put dist outside of src
+		emptyOutDir: true
+	}
 })
