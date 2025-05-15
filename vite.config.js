@@ -1,10 +1,8 @@
-import { defineConfig } from 'vite'
+// vite.config.js
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-	root: 'src', // root is now /src
-	base: '/GitHubPortfolio/', // needed for GitHub Pages
-	build: {
-		outDir: '../dist', // go up to put dist outside of src
-		emptyOutDir: true
-	}
-})
+	// root: '.',            ← default, so no need to include
+	// publicDir: 'public',  ← also default
+});
+
