@@ -7,18 +7,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependency directories
+#node_modules/
 
-# Editor directories and files
-.vscode/*
+# Build output
+dist/
+dist-ssr/
+
+# Local environment files
+*.local
+.env
+.env.local
+.env.*.local
+
+# IDE/editor directories and files
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Visual Studio files
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Godot-specific (optional if you want to ignore Godot-generated temp files)
+.import/
+export.cfg
+export_presets.cfg
