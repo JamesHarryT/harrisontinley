@@ -1,6 +1,6 @@
-import * as THREE from URL('https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js');
-import { OrbitControls } from URL('https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js');
-
+import './style.css'; // You added this to import your CSS
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // === Scene Setup ===
 const scene = new THREE.Scene();
