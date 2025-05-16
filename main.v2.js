@@ -81,7 +81,7 @@ function moveCamera() {
 	camera.rotation.y = t * -0.0002;
 }
 document.body.onscroll = moveCamera;
-
+moveCamera();
 // === Animation Loop ===
 function animate() {
 	requestAnimationFrame(animate);
