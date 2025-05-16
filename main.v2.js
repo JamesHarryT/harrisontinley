@@ -5,15 +5,18 @@ import { GLTFLoader } from './js/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 
-let astroModel = null;
-
 const loader = new GLTFLoader();
-loader.load('./public/assets/models/astro.glb', (gltf) => {
-		astroModel = gltf.scene;
-		astroModel.position.set(-10, 0, 30);
-		scene.add(astroModel);
-	}
-);
+function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1) {
+	const loader = new GLTFLoader();
+	loader.load(path, (gltf) => {
+		const model = gltf.scene;
+		model.position.set(position.x, position.y, position.z);
+		model.scale.set(scale, scale, scale);
+		scene.add(model);
+	});
+}
+loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0);
+loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 1.0);
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -100,7 +103,7 @@ function animate() {
 	requestAnimationFrame(animate);
 
 	if (astroModel) {
-		astroModel.rotation.y += 0.005;
+		astroModel.rotation.y += 0.02;
 	}
 
 	torus.rotation.x += 0.01;
