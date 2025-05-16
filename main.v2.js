@@ -1,8 +1,15 @@
 import * as THREE from './js/three.module.js';
 import { OrbitControls } from './js/OrbitControls.js';
+import { GLTFLoader } from './js/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 
+let blackHoleModel = null;
+const loader = new GLTFLoader();
+loader.load('./public/assets/models/blackHole01.glb', (gltf) => {
+	blackHoleModel = gltf.scene;
+	scene.add(gltf.scene);
+});
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -90,6 +97,10 @@ window.addEventListener('resize', () => {
 // === Animation Loop ===
 function animate() {
 	requestAnimationFrame(animate);
+	if (blackHoleModel) {
+	blackHoleModel.rotation.y += 0.005;
+	}
+
 
 	torus.rotation.x += 0.01;
 	torus.rotation.y += 0.01;
