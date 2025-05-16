@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js';
+import * as THREE from URL('https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js');
+import { OrbitControls } from URL('https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/controls/OrbitControls.js');
 
 
 // === Scene Setup ===
