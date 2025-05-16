@@ -80,6 +80,11 @@ document.body.onscroll = moveCamera;
 window.addEventListener('load', () => {
 	moveCamera(); // ← now runs after layout is complete
 });
+window.addEventListener('resize', () => {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 // === Animation Loop ===
 function animate() {
