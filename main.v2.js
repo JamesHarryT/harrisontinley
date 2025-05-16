@@ -10,6 +10,7 @@ let astroModel = null;
 const loader = new GLTFLoader();
 loader.load('./public/assets/models/astro.glb', (gltf) => {
 		astroModel = gltf.scene;
+		astroModel.set.position(-10, 0, 30);
 		scene.add(astroModel);
 	}
 );
