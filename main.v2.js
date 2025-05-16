@@ -1,12 +1,8 @@
-console.log("✅ Version 4 - live reload test");
 import * as THREE from './js/three.module.js';
 import { OrbitControls } from './js/OrbitControls.js';
-console.log("I imported");
 
-// === Scene Setup ===
 const scene = new THREE.Scene();
 
-console.log("I'm maybe working");
 
 const camera = new THREE.PerspectiveCamera(
 	75,
