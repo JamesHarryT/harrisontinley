@@ -5,18 +5,31 @@ import { GLTFLoader } from './js/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 
+const animatedModels = [];
+
 const loader = new GLTFLoader();
-function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1) {
-	const loader = new GLTFLoader();
-	loader.load(path, (gltf) => {
-		const model = gltf.scene;
-		model.position.set(position.x, position.y, position.z);
-		model.scale.set(scale, scale, scale);
-		scene.add(model);
+function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = false) {
+	return new Promise((resolve, reject) => {
+		const loader = new GLTFLoader();
+		loader.load(
+			path,
+			(gltf) => {
+				const model = gltf.scene;
+				model.position.set(position.x, position.y, position.z);
+				model.scale.set(scale, scale, scale);
+				scene.add(model);
+
+				if (animate) {
+					animatedModels.push(model);
+				}
+
+				resolve(model);
+			}
+		);
 	});
 }
-loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0);
-loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 1.0);
+loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
+loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 1.0, true);
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -102,9 +115,9 @@ window.addEventListener('resize', () => {
 function animate() {
 	requestAnimationFrame(animate);
 
-	if (astroModel) {
-		astroModel.rotation.y += 0.02;
-	}
+	animatedModels.forEach((model) => {
+		model.rotation.y += 0.02;
+	});
 
 	torus.rotation.x += 0.01;
 	torus.rotation.y += 0.01;
