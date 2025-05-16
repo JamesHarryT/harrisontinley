@@ -29,7 +29,7 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 	});
 }
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
-loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 1.0, true);
+loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 10.0, true);
 
 const camera = new THREE.PerspectiveCamera(
 	75,
