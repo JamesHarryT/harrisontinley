@@ -22,7 +22,7 @@ loader.load('./public/assets/models/astro.glb', (gltf) => {
 		const action = mixer.clipAction(clip);
 		action.play();
 		action.paused = true;  // pause automatic playback, control manually
-		animationDuration = gltf.animations[0].duration;
+		animationDuration = clip.duration;
 	}
 });
 
