@@ -8,15 +8,9 @@ const scene = new THREE.Scene();
 let astroModel = null;
 
 const loader = new GLTFLoader();
-loader.load('./public/assets/models/astro.glb',
-	(gltf) => {
-		console.log('✅ Model loaded');
+loader.load('./public/assets/models/astro.glb', (gltf) => {
 		astroModel = gltf.scene;
 		scene.add(astroModel);
-	},
-	undefined,
-	(error) => {
-		console.error('❌ Error loading model:', error);
 	}
 );
 
