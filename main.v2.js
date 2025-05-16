@@ -3,14 +3,23 @@ import * as BufferGeometryUtils from './js/BufferGeometryUtils.js';
 import { OrbitControls } from './js/OrbitControls.js';
 import { GLTFLoader } from './js/GLTFLoader.js';
 
-
 const scene = new THREE.Scene();
 
-let blackHoleModel = null;
+let astroModel = null;
+let mixer = null;
 const loader = new GLTFLoader();
-loader.load('./public/assets/models/blackHole01.glb', (gltf) => {
-	blackHoleModel = gltf.scene;
-	scene.add(gltf.scene);
+loader.load('./public/assets/models/astro.glb', (gltf) => {
+	astroModel = gltf.scene;
+	scene.add(astroModel);
+
+	if (gltf.animations && gltf.animations.length) {
+		mixer = new THREE.AnimationMixer(astroModel);
+
+		// Play first animation clip but pause it to control manually
+		const action = mixer.clipAction(gltf.animations[0]);
+		action.play();
+		action.paused = true;  // pause auto-playback so we can scrub manually
+	}
 });
 
 const camera = new THREE.PerspectiveCamera(
@@ -88,7 +97,7 @@ function moveCamera() {
 window.addEventListener('scroll', moveCamera);
 
 window.addEventListener('load', () => {
-	moveCamera(); // ← now runs after layout is complete
+	moveCamera();
 });
 window.addEventListener('resize', () => {
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -96,13 +105,33 @@ window.addEventListener('resize', () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+// === Scroll-driven animation control ===
+window.addEventListener('scroll', () => {
+	if (!mixer) return;
+
+	const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+	const scrollPercent = scrollTop / scrollHeight;
+
+	// Assume first animation clip
+	const clip = mixer._actions[0].getClip();
+	const duration = clip.duration;
+
+	// Manually set animation time based on scroll percent
+	mixer.setTime(scrollPercent * duration);
+});
+
 // === Animation Loop ===
 function animate() {
 	requestAnimationFrame(animate);
-	if (blackHoleModel) {
-	blackHoleModel.rotation.y += 0.005;
-	}
 
+	// Update mixer with 0 delta to apply manual time changes smoothly
+	if (mixer) mixer.update(0);
+
+	if (astroModel) {
+		astroModel.rotation.y += 0.005;
+	}
 
 	torus.rotation.x += 0.01;
 	torus.rotation.y += 0.01;
