@@ -6,10 +6,6 @@ import { GLTFLoader } from './js/GLTFLoader.js';
 const scene = new THREE.Scene();
 
 let astroModel = null;
-let mixer = null;
-let clock = new THREE.Clock();
-let animationDuration = 0;
-let currentTime = 0;
 
 const loader = new GLTFLoader();
 loader.load('./public/assets/models/astro.glb',
@@ -17,26 +13,6 @@ loader.load('./public/assets/models/astro.glb',
 		console.log('✅ Model loaded');
 		astroModel = gltf.scene;
 		scene.add(astroModel);
-
-		if (gltf.animations.length) {
-			console.log('✅ Animations found:', gltf.animations.map(a => a.name));
-
-			mixer = new THREE.AnimationMixer(astroModel);
-			const clip = THREE.AnimationClip.findByName(gltf.animations, 'chilling');
-
-			if (!clip) {
-				console.error('❌ Animation "chilling" not found.');
-				return;
-			}
-
-			const action = mixer.clipAction(clip);
-			action.play();
-			action.paused = true;
-			animationDuration = clip.duration;
-			console.log(`✅ Animation "chilling" loaded. Duration: ${animationDuration}s`);
-		} else {
-			console.warn('⚠️ No animations found in model');
-		}
 	},
 	undefined,
 	(error) => {
@@ -124,25 +100,9 @@ window.addEventListener('resize', () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// === Scroll to control animation ===
-function onWheel(event) {
-	if (!mixer) return;
-
-	const delta = event.deltaY * 0.001;
-	currentTime = THREE.MathUtils.clamp(currentTime + delta, 0, animationDuration);
-	mixer.setTime(currentTime);
-	console.log(`⏱️ Animation time set to: ${currentTime.toFixed(2)}s`);
-}
-window.addEventListener('wheel', onWheel);
-
 // === Animation Loop ===
 function animate() {
 	requestAnimationFrame(animate);
-
-	const delta = clock.getDelta();
-	if (mixer) {
-		mixer.update(delta); // Needed even with manual time setting
-	}
 
 	if (astroModel) {
 		astroModel.rotation.y += 0.005;
