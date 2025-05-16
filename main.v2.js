@@ -18,7 +18,8 @@ loader.load('./public/assets/models/astro.glb', (gltf) => {
 
 	if (gltf.animations.length) {
 		mixer = new THREE.AnimationMixer(astroModel);
-		const action = mixer.clipAction(gltf.animations[0]);
+		const clip = THREE.AnimationClip.findByName(gltf.animations, 'chilling');
+		const action = mixer.clipAction(clip);
 		action.play();
 		action.paused = true;  // pause automatic playback, control manually
 		animationDuration = gltf.animations[0].duration;
