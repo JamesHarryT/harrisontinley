@@ -1,7 +1,7 @@
 import './style.css';
 
-import * as THREE from 'https://esm.sh/three';
-import { OrbitControls } from 'https://esm.sh/three/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 
 
