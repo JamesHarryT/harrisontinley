@@ -19,10 +19,15 @@ loader.load('./public/assets/models/astro.glb', (gltf) => {
 	if (gltf.animations.length) {
 		mixer = new THREE.AnimationMixer(astroModel);
 		const clip = THREE.AnimationClip.findByName(gltf.animations, 'chilling');
-		const action = mixer.clipAction(clip);
-		action.play();
-		action.paused = true;  // pause automatic playback, control manually
-		animationDuration = clip.duration;
+		if (clip) {
+			const action = mixer.clipAction(clip);
+			action.play();
+			action.paused = true;
+			animationDuration = clip.duration;
+			console.log('Animation "chilling" loaded and ready.');
+		} else {
+			console.warn('Animation "chilling" not found!');
+		}
 	}
 });
 
