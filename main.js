@@ -3,10 +3,12 @@ import '/style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-
+console.log("I imported");
 
 // === Scene Setup ===
 const scene = new THREE.Scene();
+
+console.log("I'm maybe working");
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -57,11 +59,11 @@ function addStar() {
 Array(200).fill().forEach(addStar);
 
 // === Background ===
-const spaceTexture = new THREE.TextureLoader().load('assets/textures/background.jpg');
+const spaceTexture = new THREE.TextureLoader().load('/public/assets/textures/background.jpg');
 scene.background = spaceTexture;
 
 // === Avatar Cube ===
-const promTexture = new THREE.TextureLoader().load('assets/pictures/promFlick.png');
+const promTexture = new THREE.TextureLoader().load('/public/assets/pictures/promFlick.png');
 const meCube = new THREE.Mesh(
 	new THREE.BoxGeometry(3, 3, 3),
 	new THREE.MeshBasicMaterial({ map: promTexture })
