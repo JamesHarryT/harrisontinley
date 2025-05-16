@@ -1,4 +1,3 @@
-console.log("i opened vro");
 import * as THREE from 'https://unpkg.com/three@0.160.1/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.160.1/examples/jsm/controls/OrbitControls.js';
 
