@@ -2,6 +2,26 @@ import './style.css'; // You added this to import your CSS
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+function isWebGLAvailable() {
+	try {
+		const canvas = document.createElement('canvas');
+		return !!(window.WebGLRenderingContext && (
+			canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+		));
+	} catch (e) {
+		return false;
+	}
+}
+
+if (!isWebGLAvailable()) {
+	const warning = document.createElement('div');
+	warning.innerText = 'WebGL is not supported on your browser or device.';
+	warning.style.cssText = 'color: white; background: red; padding: 1em; font-family: sans-serif;';
+	document.body.appendChild(warning);
+	throw new Error('WebGL not supported'); // stop script execution
+}
+
+
 // === Scene Setup ===
 const scene = new THREE.Scene();
 
@@ -50,7 +70,6 @@ function addStar() {
 	star.position.set(x, y, z);
 	scene.add(star);
 }
-
 Array(200).fill().forEach(addStar);
 
 // === Background ===
@@ -89,5 +108,4 @@ function animate() {
 
 	renderer.render(scene, camera);
 }
-
 animate();
