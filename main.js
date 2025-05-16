@@ -58,11 +58,11 @@ function addStar() {
 Array(200).fill().forEach(addStar);
 
 // === Background ===
-const spaceTexture = new THREE.TextureLoader().load('/public/assets/textures/background.jpg');
+const spaceTexture = new THREE.TextureLoader().load('./assets/textures/background.jpg');
 scene.background = spaceTexture;
 
 // === Avatar Cube ===
-const promTexture = new THREE.TextureLoader().load('/public/assets/pictures/promFlick.png');
+const promTexture = new THREE.TextureLoader().load('./assets/pictures/promFlick.png');
 const meCube = new THREE.Mesh(
 	new THREE.BoxGeometry(3, 3, 3),
 	new THREE.MeshBasicMaterial({ map: promTexture })
