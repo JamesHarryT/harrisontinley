@@ -1,3 +1,4 @@
+console.log("✅ Version 4 - live reload test");
 import * as THREE from './js/three.module.js';
 import { OrbitControls } from './js/OrbitControls.js';
 console.log("I imported");
