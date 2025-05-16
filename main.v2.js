@@ -12,24 +12,37 @@ let animationDuration = 0;
 let currentTime = 0;
 
 const loader = new GLTFLoader();
-loader.load('./public/assets/models/astro.glb', (gltf) => {
-	astroModel = gltf.scene;
-	scene.add(astroModel);
+loader.load('./assets/models/astro.glb',
+	(gltf) => {
+		console.log('✅ Model loaded');
+		astroModel = gltf.scene;
+		scene.add(astroModel);
 
-	if (gltf.animations.length) {
-		mixer = new THREE.AnimationMixer(astroModel);
-		const clip = THREE.AnimationClip.findByName(gltf.animations, 'chilling');
-		if (clip) {
+		if (gltf.animations.length) {
+			console.log('✅ Animations found:', gltf.animations.map(a => a.name));
+
+			mixer = new THREE.AnimationMixer(astroModel);
+			const clip = THREE.AnimationClip.findByName(gltf.animations, 'chilling');
+
+			if (!clip) {
+				console.error('❌ Animation "chilling" not found.');
+				return;
+			}
+
 			const action = mixer.clipAction(clip);
 			action.play();
 			action.paused = true;
 			animationDuration = clip.duration;
-			console.log('Animation "chilling" loaded and ready.');
+			console.log(`✅ Animation "chilling" loaded. Duration: ${animationDuration}s`);
 		} else {
-			console.warn('Animation "chilling" not found!');
+			console.warn('⚠️ No animations found in model');
 		}
+	},
+	undefined,
+	(error) => {
+		console.error('❌ Error loading model:', error);
 	}
-});
+);
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -59,7 +72,7 @@ pointLight.position.set(5, 5, 5);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
-// Helpers (for development/debugging)
+// Helpers
 scene.add(
 	new THREE.PointLightHelper(pointLight),
 	new THREE.GridHelper(200, 50)
@@ -80,11 +93,11 @@ function addStar() {
 Array(200).fill().forEach(addStar);
 
 // === Background ===
-const spaceTexture = new THREE.TextureLoader().load('./public/assets/textures/background.jpg');
+const spaceTexture = new THREE.TextureLoader().load('./assets/textures/background.jpg');
 scene.background = spaceTexture;
 
 // === Avatar Cube ===
-const promTexture = new THREE.TextureLoader().load('./public/assets/pictures/promFlick.png');
+const promTexture = new THREE.TextureLoader().load('./assets/pictures/promFlick.png');
 const meCube = new THREE.Mesh(
 	new THREE.BoxGeometry(3, 3, 3),
 	new THREE.MeshBasicMaterial({ map: promTexture })
@@ -104,10 +117,7 @@ function moveCamera() {
 	camera.rotation.y = t * -0.0002;
 }
 window.addEventListener('scroll', moveCamera);
-
-window.addEventListener('load', () => {
-	moveCamera(); // ← now runs after layout is complete
-});
+window.addEventListener('load', () => moveCamera());
 window.addEventListener('resize', () => {
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
@@ -118,9 +128,10 @@ window.addEventListener('resize', () => {
 function onWheel(event) {
 	if (!mixer) return;
 
-	const delta = event.deltaY * 0.001; // Adjust scroll sensitivity here
+	const delta = event.deltaY * 0.001;
 	currentTime = THREE.MathUtils.clamp(currentTime + delta, 0, animationDuration);
 	mixer.setTime(currentTime);
+	console.log(`⏱️ Animation time set to: ${currentTime.toFixed(2)}s`);
 }
 window.addEventListener('wheel', onWheel);
 
@@ -128,8 +139,13 @@ window.addEventListener('wheel', onWheel);
 function animate() {
 	requestAnimationFrame(animate);
 
+	const delta = clock.getDelta();
+	if (mixer) {
+		mixer.update(delta); // Needed even with manual time setting
+	}
+
 	if (astroModel) {
-		astroModel.rotation.y += 0.005; // Optional: keep rotating slowly
+		astroModel.rotation.y += 0.005;
 	}
 
 	torus.rotation.x += 0.01;
