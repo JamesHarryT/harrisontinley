@@ -1,6 +1,8 @@
 import * as THREE from './js/three.module.js';
+import * as BufferGeometryUtils from './js/BufferGeometryUtils.js';
 import { OrbitControls } from './js/OrbitControls.js';
 import { GLTFLoader } from './js/GLTFLoader.js';
+
 
 const scene = new THREE.Scene();
 
