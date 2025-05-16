@@ -7,18 +7,21 @@ const scene = new THREE.Scene();
 
 let astroModel = null;
 let mixer = null;
+let clock = new THREE.Clock();
+let animationDuration = 0;
+let currentTime = 0;
+
 const loader = new GLTFLoader();
 loader.load('./public/assets/models/astro.glb', (gltf) => {
 	astroModel = gltf.scene;
 	scene.add(astroModel);
 
-	if (gltf.animations && gltf.animations.length) {
+	if (gltf.animations.length) {
 		mixer = new THREE.AnimationMixer(astroModel);
-
-		// Play first animation clip but pause it to control manually
 		const action = mixer.clipAction(gltf.animations[0]);
 		action.play();
-		action.paused = true;  // pause auto-playback so we can scrub manually
+		action.paused = true;  // pause automatic playback, control manually
+		animationDuration = gltf.animations[0].duration;
 	}
 });
 
@@ -97,7 +100,7 @@ function moveCamera() {
 window.addEventListener('scroll', moveCamera);
 
 window.addEventListener('load', () => {
-	moveCamera();
+	moveCamera(); // ← now runs after layout is complete
 });
 window.addEventListener('resize', () => {
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -105,32 +108,22 @@ window.addEventListener('resize', () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// === Scroll-driven animation control ===
-window.addEventListener('scroll', () => {
+// === Scroll to control animation ===
+function onWheel(event) {
 	if (!mixer) return;
 
-	const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-	const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-
-	const scrollPercent = scrollTop / scrollHeight;
-
-	// Assume first animation clip
-	const clip = mixer._actions[0].getClip();
-	const duration = clip.duration;
-
-	// Manually set animation time based on scroll percent
-	mixer.setTime(scrollPercent * duration);
-});
+	const delta = event.deltaY * 0.001; // Adjust scroll sensitivity here
+	currentTime = THREE.MathUtils.clamp(currentTime + delta, 0, animationDuration);
+	mixer.setTime(currentTime);
+}
+window.addEventListener('wheel', onWheel);
 
 // === Animation Loop ===
 function animate() {
 	requestAnimationFrame(animate);
 
-	// Update mixer with 0 delta to apply manual time changes smoothly
-	if (mixer) mixer.update(0);
-
 	if (astroModel) {
-		astroModel.rotation.y += 0.005;
+		astroModel.rotation.y += 0.005; // Optional: keep rotating slowly
 	}
 
 	torus.rotation.x += 0.01;
