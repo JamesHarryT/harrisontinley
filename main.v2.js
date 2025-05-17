@@ -28,11 +28,37 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 		);
 	});
 }
+
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
 loadModel('./public/assets/models/meCube.glb', { x: 5, y: 0, z: -10 }, 1.0, true);
-loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 20 }, 1.0, true);
-loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 1.0, true);
+loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 20 }, 1.0, false);
+loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 2.5, true);
+loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: -2, z: 10 }, 2.0, true);
+
+let computer = null;
+loader.load('./public/assets/models/computer.glb', (gltf) => {
+	computer = gltf.scene;
+	computer.position.set(-15, 3, 25);
+	scene.add(computer);
+});
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+window.addEventListener('click', (event) => {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+
+	if (computer) {
+		const intersects = raycaster.intersectObject(computer, true);
+		if (intersects.length > 0) {
+			window.open('https://github.com/JamesHarryT', '_blank');
+		}
+	}
+});
 
 
 const camera = new THREE.PerspectiveCamera(
