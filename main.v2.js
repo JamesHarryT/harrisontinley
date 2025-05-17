@@ -39,8 +39,8 @@ loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0,
 let computer = null;
 loader.load('./public/assets/models/computer.glb', (gltf) => {
 	computer = gltf.scene;
-	computer.position.set(-10, 0, 35);
-	computer.scale.set(5.0, 5.0, 5.0);
+	computer.position.set(-10, -3, 30);
+	computer.scale.set(3.0, 3.0, 3.0);
 	scene.add(computer);
 });
 
