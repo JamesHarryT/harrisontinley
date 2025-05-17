@@ -39,7 +39,7 @@ loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0,
 let computer = null;
 loader.load('./public/assets/models/computer.glb', (gltf) => {
 	computer = gltf.scene;
-	computer.position.set(-10, -3, 30);
+	computer.position.set(-13, -6, 30);
 	computer.scale.set(3.0, 3.0, 3.0);
 	scene.add(computer);
 });
@@ -96,7 +96,7 @@ function addCloud() {
 		scene.add(cloud);
 		const x = THREE.MathUtils.randFloatSpread(100);
 		const y = THREE.MathUtils.randFloat(0, 40);
-		const z = THREE.MathUtils.randFloat(-0, -50);
+		const z = THREE.MathUtils.randFloat(-50, 10);
 		cloud.position.set(x, y, z);
 		cloud.rotation.set(
 			0.0,
