@@ -39,8 +39,8 @@ loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0,
 let computer = null;
 loader.load('./public/assets/models/computer.glb', (gltf) => {
 	computer = gltf.scene;
-	computer.position.set(-20, -20, 30);
-	computer.scale.set(3.0, 3.0, 3.0);
+	computer.position.set(-30, -25, 30);
+	computer.scale.set(5.0, 5.0, 5.0);
 	scene.add(computer);
 });
 
@@ -106,7 +106,7 @@ function addCloud() {
 	});
 }
 
-Array(100).fill().forEach(addCloud);
+Array(50).fill().forEach(addCloud);
 
 
 // === Background ===
