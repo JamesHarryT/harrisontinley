@@ -30,7 +30,10 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 }
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
-loadModel('./public/assets/models/meCube.glb', { x: 4, y: 0, z: -10 }, 1.0, true);
+loadModel('./public/assets/models/meCube.glb', { x: 5, y: 0, z: -10 }, 1.0, true);
+loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 20 }, 1.0, true);
+loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 1.0, true);
+
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -74,7 +77,7 @@ function addStar() {
 Array(200).fill().forEach(addStar);
 
 // === Background ===
-const spaceTexture = new THREE.TextureLoader().load('./public/assets/textures/background.jpg');
+const spaceTexture = new THREE.TextureLoader().load('./public/assets/textures/skyBG.jpeg');
 scene.background = spaceTexture;
 
 
