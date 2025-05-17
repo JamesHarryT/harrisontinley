@@ -29,7 +29,8 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 	});
 }
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
-loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 10.0, true);
+loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
+
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -44,13 +45,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-
-// === Objects ===
-const torus = new THREE.Mesh(
-	new THREE.TorusGeometry(10, 3, 16, 100),
-	new THREE.MeshStandardMaterial({ color: 0xff6347 })
-);
-scene.add(torus);
 
 // === Lighting ===
 const pointLight = new THREE.PointLight(0xffffff);
@@ -83,14 +77,14 @@ Array(200).fill().forEach(addStar);
 const spaceTexture = new THREE.TextureLoader().load('./public/assets/textures/background.jpg');
 scene.background = spaceTexture;
 
-// === Avatar Cube ===
+
 const promTexture = new THREE.TextureLoader().load('./public/assets/pictures/promFlick.png');
-const meCube = new THREE.Mesh(
-	new THREE.BoxGeometry(3, 3, 3),
-	new THREE.MeshBasicMaterial({ map: promTexture })
-);
-meCube.position.set(2, 0, -5);
-scene.add(meCube);
+let meCube = null;
+loader.load('./public/assets/models/meCube.glb', (gltf) => {
+	meCube = gltf.scene;
+	meCube.point.set(2, 0, -5);
+	scene.add(meCube);
+});
 
 // === Scroll-based Camera Movement ===
 function moveCamera() {
@@ -118,10 +112,6 @@ function animate() {
 	animatedModels.forEach((model) => {
 		model.rotation.y += 0.02;
 	});
-
-	torus.rotation.x += 0.01;
-	torus.rotation.y += 0.01;
-	torus.rotation.z += 0.01;
 
 	renderer.render(scene, camera);
 }
