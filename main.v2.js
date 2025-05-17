@@ -32,14 +32,14 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
 loadModel('./public/assets/models/meCube.glb', { x: 5, y: 0, z: -10 }, 1.0, true);
-loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 20 }, 1.0, false);
+loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 50 }, 1.0, false);
 loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 2.5, true);
-loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: -2, z: 10 }, 2.0, true);
+loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0, true);
 
 let computer = null;
 loader.load('./public/assets/models/computer.glb', (gltf) => {
 	computer = gltf.scene;
-	computer.position.set(-15, 3, 25);
+	computer.position.set(-15, 0, 35);
 	scene.add(computer);
 });
 
@@ -88,19 +88,25 @@ scene.add(
 	new THREE.GridHelper(200, 50)
 );
 
-// === Stars ===
-function addStar() {
-	const star = new THREE.Mesh(
-		new THREE.SphereGeometry(0.25, 24, 24),
-		new THREE.MeshStandardMaterial({ color: 0xffffff })
-	);
-
-	const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
-	star.position.set(x, y, z);
-	scene.add(star);
+function addCloud() {
+	let cloud = null;
+	loader.load('./public/assets/models/cloud.glb', (gltf) => {
+		cloud = gltf.scene;
+		scene.add(cloud);
+		const x = THREE.MathUtils.randFloatSpread(100);
+		const y = THREE.MathUtils.randFloatSpread(100);
+		const z = THREE.MathUtils.randFloat(-5, 20);
+		cloud.position.set(x, y, z);
+		cloud.rotation.set(
+			THREE.MathUtils.randFloat(0, Math.PI * 2),
+			THREE.MathUtils.randFloat(0, Math.PI * 2),
+			THREE.MathUtils.randFloat(0, Math.PI * 2)
+		);
+	});
 }
 
-Array(200).fill().forEach(addStar);
+Array(100).fill().forEach(addCloud);
+
 
 // === Background ===
 const spaceTexture = new THREE.TextureLoader().load('./public/assets/textures/skyBG.jpeg');
@@ -132,6 +138,7 @@ function animate() {
 	animatedModels.forEach((model) => {
 		model.rotation.y += 0.02;
 	});
+	computer.rotation.y += 0.02;
 
 	renderer.render(scene, camera);
 }
