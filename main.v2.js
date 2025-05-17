@@ -30,7 +30,7 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 }
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
-
+loadModel('./public/assets/models/meCube.glb', { x: 2, y: 0, z: 5 }, 1.0, true);
 
 const camera = new THREE.PerspectiveCamera(
 	75,
@@ -79,19 +79,10 @@ scene.background = spaceTexture;
 
 
 const promTexture = new THREE.TextureLoader().load('./public/assets/pictures/promFlick.png');
-let meCube = null;
-loader.load('./public/assets/models/meCube.glb', (gltf) => {
-	meCube = gltf.scene;
-	meCube.position.set(2, 0, -5);
-	scene.add(meCube);
-});
 
 // === Scroll-based Camera Movement ===
 function moveCamera() {
 	const t = document.body.getBoundingClientRect().top;
-
-	meCube.rotation.x += 0.01;
-	meCube.rotation.y += 0.01;
 
 	camera.position.z = t * -0.01;
 	camera.position.x = t * -0.0002;
