@@ -32,7 +32,7 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
 loadModel('./public/assets/models/meCube.glb', { x: 5, y: 0, z: -10 }, 1.0, true);
-loadModel('./public/assets/models/Car001.glb', { x: -10, y: 3, z: 50 }, 1.0, false);
+loadModel('./public/assets/models/Car001.glb', { x: 5, y: 3, z: 100 }, 1.0, false);
 loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 2.5, true);
 loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0, true);
 
@@ -95,13 +95,13 @@ function addCloud() {
 		cloud = gltf.scene;
 		scene.add(cloud);
 		const x = THREE.MathUtils.randFloatSpread(100);
-		const y = THREE.MathUtils.randFloat(-5, 20);
+		const y = THREE.MathUtils.randFloat(5, 40);
 		const z = THREE.MathUtils.randFloatSpread(100);
 		cloud.position.set(x, y, z);
 		cloud.rotation.set(
 			THREE.MathUtils.randFloat(0, Math.PI * 2),
 			THREE.MathUtils.randFloat(0, Math.PI * 2),
-			THREE.MathUtils.randFloat(0, Math.PI * 2)
+			0.0
 		);
 	});
 }
@@ -139,8 +139,9 @@ function animate() {
 	animatedModels.forEach((model) => {
 		model.rotation.y += 0.02;
 	});
+	if (computer != null) {
 	computer.rotation.y += 0.02;
-
+	}
 	renderer.render(scene, camera);
 }
 
