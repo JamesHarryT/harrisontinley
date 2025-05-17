@@ -82,7 +82,7 @@ const promTexture = new THREE.TextureLoader().load('./public/assets/pictures/pro
 let meCube = null;
 loader.load('./public/assets/models/meCube.glb', (gltf) => {
 	meCube = gltf.scene;
-	meCube.point.set(2, 0, -5);
+	meCube.position.set(2, 0, -5);
 	scene.add(meCube);
 });
 
