@@ -10,7 +10,6 @@ const animatedModels = [];
 const loader = new GLTFLoader();
 function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = false) {
 	return new Promise((resolve, reject) => {
-		const loader = new GLTFLoader();
 		loader.load(
 			path,
 			(gltf) => {
@@ -29,21 +28,41 @@ function loadModel(path, position = { x: 0, y: 0, z: 0 }, scale = 1, animate = f
 	});
 }
 
-loadModel('./public/assets/models/astro.glb', { x: -10, y: 0, z: 30 }, 2.0, true);
 loadModel('./public/assets/models/Donut.glb', { x: -13, y: 0, z: 30 }, 20.0, true);
 loadModel('./public/assets/models/meCube.glb', { x: 5, y: 0, z: -10 }, 1.0, true);
-loadModel('./public/assets/models/Car001.glb', { x: 5, y: 3, z: 100 }, 1.0, false);
-loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 2.5, true);
+loadModel('./public/assets/models/LowPolyInu1.glb', { x: 5, y: 1, z: 5}, 4.0, true);
 loadModel('./public/assets/models/ChessScene.glb', { x: -15, y: 1, z: 10 }, 4.0, true);
 
+let astro = null;
+let astroAnimation = false;
+loader.load('./public/assets/models/astro.glb', (gltf) => {
+	astro = gltf.scene;
+	astro.position.set(-10, 0, 30);
+	astro.scale.set(4.0, 4.0, 4.0);
+	scene.add(astro);
+});
 let computer = null;
 loader.load('./public/assets/models/computer.glb', (gltf) => {
 	computer = gltf.scene;
-	computer.position.set(-40, -35, 30);
-	computer.scale.set(5.0, 5.0, 5.0);
+	computer.position.set(-70, -60, 50);
+	computer.scale.set(8.0, 8.0, 8.0);
 	scene.add(computer);
 });
-
+let car = null;
+loader.load('./public/assets/models/Car001.glb', (gltf) => {
+	car = gltf.scene;
+	car.position.set(-25, -1, 10);
+	car.scale.set(5.0, 5.0, 5.0);
+	scene.add(car);
+});
+let youtube = null;
+loader.load('./public/assets/models/youtubeLogo.glb', (gltf) => {
+	youtube = gltf.scene;
+	youtube.position.set(-30, -10, 35);
+	youtube.rotation.y += THREE.MathUtils.degToRad(45);
+	youtube.scale.set(4.0, 4.0, 4.0);
+	scene.add(youtube);
+});
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -59,6 +78,24 @@ window.addEventListener('click', (event) => {
 			window.open('https://github.com/JamesHarryT', '_blank');
 		}
 	}
+	if (car) {
+		const intersects = raycaster.intersectObject(car, true);
+		if (intersects.length > 0) {
+			car.rotation.y += THREE.MathUtils.degToRad(90);
+		}
+	}
+	if (astro) {
+		const intersects = raycaster.intersectObject(astro, true);
+		if (intersects.length > 0) {
+			astroAnimation = true;
+		}
+	}
+	if (youtube) {
+		const intersects = raycaster.intersectObject(youtube, true);
+		if (intersects.length > 0) {
+			window.open('https://www.youtube.com/@crabdancer3248', '_blank');
+		}
+	}
 });
 
 
@@ -68,7 +105,6 @@ const camera = new THREE.PerspectiveCamera(
 	0.1,
 	1000
 );
-camera.position.setZ(30);
 
 const renderer = new THREE.WebGLRenderer({
 	canvas: document.querySelector('#bg'),
@@ -94,9 +130,9 @@ function addCloud() {
 	loader.load('./public/assets/models/cloud.glb', (gltf) => {
 		cloud = gltf.scene;
 		scene.add(cloud);
-		const x = THREE.MathUtils.randFloatSpread(100);
+		const x = THREE.MathUtils.randFloatSpread(200);
 		const y = THREE.MathUtils.randFloat(5, 40);
-		const z = THREE.MathUtils.randFloatSpread(100);
+		const z = THREE.MathUtils.randFloatSpread(200);
 		cloud.position.set(x, y, z);
 		cloud.rotation.set(
 			0.0,
@@ -132,7 +168,8 @@ window.addEventListener('resize', () => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// === Animation Loop ===
+let up = true;
+
 function animate() {
 	requestAnimationFrame(animate);
 
@@ -140,7 +177,34 @@ function animate() {
 		model.rotation.y += 0.02;
 	});
 	if (computer != null) {
-	computer.rotation.y += 0.02;
+	computer.rotation.y += 0.05;
+	}
+	if (astroAnimation == true && astro != null) {
+		astro.position.y += 0.2;
+		astro.position.x -= 0.5;
+		astro.rotation.y += 0.3;
+		astro.rotation.x += 0.3;
+		if (astro.position.y >= 50.0) {
+			scene.remove(astro);
+			astro = null;
+		}
+	}
+	if (youtube != null) {
+		if (youtube.position.y >= -5) {
+			up = false;
+		} else if (youtube.position.y <= -15) {
+			up = true;
+		}
+
+		if (up) {
+			youtube.position.y += 0.1;
+			const scale = youtube.scale.x + 0.05;
+			youtube.scale.set(scale, scale, scale);
+		} else {
+			youtube.position.y -= 0.1;
+			const scale = youtube.scale.x - 0.05;
+			youtube.scale.set(scale, scale, scale);
+		}
 	}
 	renderer.render(scene, camera);
 }
