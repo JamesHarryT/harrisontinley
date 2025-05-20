@@ -14,6 +14,20 @@ html, body {
   max-width: 640px; /* or whatever fits your design */
 }
 
+.license {
+	font-size: 0.9rem;
+	color: #555;
+	font-style: italic;
+	margin-top: 0.5rem;
+}
+.project-images img {
+	height: 180px;
+	object-fit: cover;
+	margin: 5px;
+	border-radius: 8px;
+}
+
+
 canvas {
   position: fixed;
   top: 0;
