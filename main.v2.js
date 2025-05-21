@@ -119,12 +119,6 @@ pointLight.position.set(5, 5, 5);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
-// Helpers
-scene.add(
-	new THREE.PointLightHelper(pointLight),
-	new THREE.GridHelper(200, 50)
-);
-
 function addCloud() {
 	let cloud = null;
 	loader.load('./public/assets/models/cloud.glb', (gltf) => {
