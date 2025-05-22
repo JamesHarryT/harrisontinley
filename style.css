@@ -20,6 +20,7 @@ html, body {
 	font-style: italic;
 	margin-top: 0.5rem;
 }
+
 .project-images {
 	display: flex;
 	flex-wrap: wrap;
@@ -72,12 +73,30 @@ h1, h2, h3, blockquote {
 	font-style: normal;
 }
 
+h1 {
+	font-size: clamp(4rem, 10vw, 6rem);
+	line-height: 2.0;
+	margin: 0;
+}
+
 header {
 	background: var(--dark-bg);
 	grid-column: 2 / span 5;
 	font-size: clamp(1.5rem, 4vw, 2.5rem);
 	padding: 2rem;
 	margin-bottom: var(--spacing);
+
+	border: 8px solid red;
+	border-radius: 0.5rem;
+	animation: rgb-border 10s linear infinite;
+}
+
+@keyframes rgb-border {
+	0% { border-color: rgb(255, 255, 255); }
+	25% { border-color: rgb(255, 0, 0); }
+	50% { border-color: rgb(0, 255, 0); }
+	75% { border-color: rgb(0, 0, 255);}
+	100% { border-color: rgb(255, 255, 255); }
 }
 
 section {
@@ -87,18 +106,27 @@ section {
 	font-size: clamp(1rem, 2.5vw, 1.25rem);
 	line-height: 1.5;
 	margin-bottom: var(--spacing);
+
+	border: 8px solid red;
+	border-radius: 0.5rem;
+	animation: rgb-border 10s linear infinite;
 }
+
 
 blockquote {
 	margin: 0;
 	padding: 0;
 	grid-column: 2 / span 9;
 	margin-bottom: var(--spacing);
+
+	background: none; 
+	border-left: 4px solid #ccc;
+	padding-left: 1rem;
 }
 
 blockquote p {
-	color: black;
-	background-color: rgb(202, 243, 255);
+	color: white;
+	background: none; 
 	font-size: clamp(1.5rem, 5vw, 3rem);
 	display: inline;
 	line-height: 1.1;
@@ -126,7 +154,6 @@ blockquote p {
 	border-radius: 8px;
 }
 
-/* Responsive tweaks */
 @media (max-width: 768px) {
 	.project-images img {
 		max-width: 100%;
